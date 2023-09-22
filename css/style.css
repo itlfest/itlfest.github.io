@@ -10,6 +10,7 @@
     background-color: #333;
     color: #fff;
     text-align: center;
+    font-size: large;
   }
   #loading {
     display: none;
@@ -73,6 +74,9 @@
   a:active {
     color: #ff6a3b
   }
+  .large {
+    font-size : large;
+    }
 
   /*全てのwebページに適用　ヘッダー*/
   .logo {
@@ -149,6 +153,7 @@ th, td{
     background-color: #333;
     color: #fff;
     text-align: center;
+    font-size: medium;
 }
 
 .foot-wrap .menu-left, .menu-center, .menu-right {
@@ -208,6 +213,3 @@ th, td{
   margin-right: 10px;
 }
 
-.oshirase {
-font-weight : bold;
-}
