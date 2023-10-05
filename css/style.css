@@ -1,12 +1,14 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+2&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
   /*全てのページに適用*/
   html  * {
-    font-family: 'DotGothic16', sans-serif;
+    
     box-sizing: border-box;
   }
   body {
+    font-family: 'DotGothic16', sans-serif;
     background-color: #333;
     color: #fff;
     text-align: center;
@@ -48,7 +50,7 @@
     padding-bottom: 5px;
     padding-left: 5px;
     text-align: center;
-
+    
     line-height:0.95em;
     font-weight:bold;
     text-shadow:
@@ -77,6 +79,9 @@
   .large {
     font-size : large;
     }
+  .honbun{
+    font-family: 'M PLUS 2', sans-serif !important;
+  }
 
   /*全てのwebページに適用　ヘッダー*/
   .logo {
@@ -99,7 +104,8 @@
     filter: saturate(80%);
   }
 
-  .nav li {
+
+.nav li {
     display: inline;
     list-style-type: none;
     padding-right: 30px;
