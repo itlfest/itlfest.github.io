@@ -1,0 +1,11 @@
+.flex{
+    display: flex;
+    align-items:center;
+  }
+.guest{
+    width: 35%;
+    padding-right: 30px;
+}
+.hidari{
+    text-align: left;
+}
