@@ -4,7 +4,6 @@
 
   /*全てのページに適用*/
   html  * {
-    
     box-sizing: border-box;
   }
   body {
@@ -14,25 +13,45 @@
     text-align: center;
     font-size: large;
   }
-  #loading {
-    display: none;
+  .loading-screen {
     position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    background-color: #333;
-    text-align: center;
-  }
-  #loading_logo {
-    display: none;
-    width: 50%;
-    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
-  }
+    background-color: rgba(255, 255, 255, 0.9); /* 背景色の設定　変更可能 */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  .loading-screen img {
+    width: 500px; /* 画像のサイズ　変更可能 */
+}
+  .hover-ul {
+  display: inline-block;
+  position: relative;
+  color: 
+#0087ca;
+}
+
+  .hover-ul:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90.0deg, rgba(52,57,255,1) 0%, rgba(166,31,255,1) 20.0%, rgba(244,53,255,1) 40%, rgba(255,77,242,1) 60%, rgba(255,30,193,1) 80%); /*red green blue alphaの順。 alpha=透明度*/
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+  .hover-ul:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
   .wrapper {
     margin: 0 auto 0 auto;
     max-width: 960px;
