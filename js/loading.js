@@ -1,5 +1,7 @@
-  $(window).on('load', function() {
-    $('#loadingScreen').fadeOut('slow');
+'use strict';
+
+$(window).on('load', function() {
+  $('#loadingScreen').fadeOut('slow');
 });
 
 $('a').on('click', function(event) {
@@ -10,5 +12,6 @@ $('a').on('click', function(event) {
 
   setTimeout(function() {
       window.location = href; // 1秒後にページ遷移
-  }, 1100);
+  }, 750);
 });
+
