@@ -19,7 +19,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.9); /* 背景色の設定　変更可能 */
+    background-color: rgba(24, 26, 27, 0.9); /* 背景色の設定　変更可能 */
     z-index: 9999;
     display: flex;
     justify-content: center;
