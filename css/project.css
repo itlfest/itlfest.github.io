@@ -3,9 +3,12 @@
     align-items:center;
   }
 .guest{
-    width: 35%;
+    width: 100%;
     padding-right: 30px;
 }
 .hidari{
     text-align: left;
+}
+.shukusho{
+    width: 40%;
 }
