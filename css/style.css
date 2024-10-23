@@ -1,14 +1,15 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+2&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 
   /*全てのページに適用*/
   html  * {
     box-sizing: border-box;
   }
   body {
-    font-family: 'DotGothic16', sans-serif;
-    background-color: #333;
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #161514;
     color: #fff;
     text-align: center;
     font-size: large;
@@ -58,7 +59,7 @@
   h2 {
     color: #fff;
     font-size: 22px;
-    border-bottom: 3px dotted #2ac5b3;
+    border-bottom: 3px dotted #26b597;
     margin-top: 60px;
     margin-right: 0px;
     margin-bottom: 30px;
@@ -71,10 +72,10 @@
     line-height:0.95em;
     font-weight:bold;
     text-shadow:
-      0 0 0.05em #2ac5b3,
-      0 0 0.10em #2ac5b3,
-      0 0 0.15em #2ac5b3,
-      0 0 0.30em #2ac5b3;
+      0 0 0.05em #26b597,
+      0 0 0.10em #26b597,
+      0 0 0.15em #26b597,
+      0 0 0.30em #26b597;
     filter: saturate(80%);
   }
 
@@ -95,7 +96,7 @@
     color: deeppink;
   }
   a:active {
-    color: #ff6a3b
+    color: #e94615
   }
   .large {
     font-size : large;
@@ -119,10 +120,10 @@
     font-weight:bold;
     color: #FFF;
     text-shadow:
-      0 0 0.05em #2ac5b3,
-      0 0 0.10em #2ac5b3,
-      0 0 0.15em #2ac5b3,
-      0 0 0.30em #2ac5b3;
+      0 0 0.05em #26b597,
+      0 0 0.10em #26b597,
+      0 0 0.15em #26b597,
+      0 0 0.30em #26b597;
     filter: saturate(80%);
   }
 
@@ -135,7 +136,7 @@
   .nav ul {
     margin: 0 0 0 0;
     padding: 20px 10px 15px 20px;
-    border-bottom: 3px solid #2ac5b3;
+    border-bottom: 3px solid #26b597;
     padding: 10px;
     text-align: center;
   }
@@ -144,15 +145,15 @@
     text-decoration: none;
   }
   .nav a:visited{
-    color: #c0f05a;
+    color: #e2dc30;
     text-decoration: none;
   }
   .nav a:hover{
-    color: deeppink;
+    color: e4007f;
     text-decoration: none;
   }
   .nav a:active{
-    color: deeppink;
+    color: e4007f;
     text-decoration: none;
   }
 
@@ -178,7 +179,6 @@ th, td{
 
 /*フッター情報*/
 .foot-wrap {
-    background-color: #333;
     color: #fff;
     text-align: center;
     font-size: medium;
@@ -197,7 +197,7 @@ th, td{
 }
 
 .foot-wrap h3 {
-    border-bottom: 3px solid #2ac5b3;
+    border-bottom: 3px solid #26b597;
     padding: 10px;
 }
 
@@ -207,7 +207,7 @@ th, td{
 }
 
 .foot-wrap a:hover {
-    color: deeppink;
+    color: e4007f;
 }
 
 .foot-wrap .cmark {
