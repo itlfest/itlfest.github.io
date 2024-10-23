@@ -1,0 +1,20 @@
+.information{
+    line-height: 1.85;
+    text-align: left;
+}
+
+.flex{
+    display: flex;
+    align-items:center;
+  }
+
+  .campus{
+    width: 35%;
+    padding-right: 30px;
+  }
+  footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
