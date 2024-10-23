@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<html>
+<!--タイトル-->
+
+<head>
+  <meta charset="UTF-8">
+  <title>中央大学 iTLFest.-企画</title>
+  <meta name=”robots” content=”noindex”>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="icon" href="/favicon.ico" id="favicon">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link href="css/lightbox.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/loading.js"></script>
+  <script src="js/lightbox.js"></script>
+</head>
+
+
+<!--本文-->
+<!--ヘッダー情報-->
+
+<body>
+  <div id="loadingScreen" class="loading-screen">
+    <img src="img/logo_loading.gif" alt="Loading...">
+</div>
+  <div class="wrapper">
+    <main>
+      <header class="header">
+        <img class="logo" src="img/fest_logo_2024.png">
+        <p>2024年度は11月2日,11月3日の2日間に渡り、中央大学市ヶ谷田町キャンパスで開催!!!</p>
+        <nav class="nav">
+          <ul>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="about.html">概要</a></li>
+            <li><a href="program.html">企画紹介</a></li>
+            <li><a href="access.html">アクセス</a></li>
+            <li><a href="contact.html">お問い合わせ</a></li>
+            <li><a href="https://twitter.com/festival_itl" target="_blank"><img src="img/x_logo.png" width="20" height="20"></a></li>
+            <li><a href="https://www.instagram.com/itlfest_2024/?hl=ja" target="_blank"><img src="img/instagram_logo.png" width="20" height="20" alt="Instagram"></a></li>
+          </ul>
+        </nav>
+      </header> 
+
+
+
+
+      
+
+ 
+  <!--
+    <img class="myImg" src="img/2024page8-01.png" alt="2日タイムテーブル" width="200" height="283">
+    <img class="myImg" src="img/2024page9-01.png" alt="3日タイムテーブル" width="200" height="283">
+
+
+
+    
+    <p>ステージ企画のタイムテーブル　画像をクリックすると大きくなります</p>
+  
+    -->
+
+  <style>/* モーダルウィンドウのスタイル */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.9);
+    }
+    
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 80%;
+      height: auto;
+    }
+    
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }    
+    </style>
+    <script>// モーダルウィンドウの要素を取得
+      var modal = document.getElementById("myModal");
+      var modalImg = document.getElementById("img01");
+      var captionText = document.getElementById("caption");
+      
+      // すべての画像要素を取得
+      var imgs = document.getElementsByClassName("myImg");
+      
+      // 画像をクリックしたときにモーダルを表示
+      for (var i = 0; i < imgs.length; i++) {
+        imgs[i].onclick = function(){
+          modal.style.display = "block";
+          modalImg.src = this.src;
+          captionText.innerHTML = this.alt;
+        }
+      }
+      
+      // モーダルを閉じるための要素を取得
+      var span = document.getElementsByClassName("close")[0];
+      
+      // モーダルを閉じる
+      span.onclick = function() { 
+        modal.style.display = "none";
+      }      
+      </script>
+  
+  <main>
+  <section id="introduction">
+  <h1>企画紹介</h1>
+
+    <p>👇気になる企画をクリックしてください👇</p>
+        <div class="categories">
+          <div class="category-box" onclick="scrollToCategory('committee')">委員会企画</div>
+          <div class="category-box" onclick="scrollToCategory('exhibition')">展示企画</div>
+          <div class="category-box" onclick="scrollToCategory('stage')">ステージ企画</div>
+          <div class="category-box" onclick="scrollToCategory('other')">その他の企画</div>
+      </div>
+    
+  </section>
+
+      <div id="committee" class="category">
+          <h2>委員会企画</h2>
+          
+          <!--　ポスター完成したらこっち使う
+          <div class="tabs">
+              <button class="tab-button" onclick="openTab(event, '企画1')"><img src="img/1先生企画ポスター.jpg" alt="先生企画" width="50" height="71">先生企画</button>
+              <button class="tab-button" onclick="openTab(event, '企画2')">ボードゲームカフェ</button>
+              <button class="tab-button" onclick="openTab(event, '企画3')"><img src="img/3早押しクイズ　ポスター.png" alt="早押しクイズ" width="50" height="71">早押しクイズ</button>
+              <button class="tab-button" onclick="openTab(event, '企画4')"><img src="img/4タイピング大会　ポスター.png" alt="タイピング大会" width="50" height="71">タイピング大会</button>
+              <button class="tab-button" onclick="openTab(event, '企画5')"><img src="img/5カラオケ大会ポスター.png" alt="カラオケ大会" width="50" height="71">カラオケ大会</button>
+              <button class="tab-button" onclick="openTab(event, '企画7')"><img src="img/7ゼミ企画ポスター.jpg" alt="ゼミ企画" width="50" height="71">ゼミ企画</button>
+              <button class="tab-button" onclick="openTab(event, '企画17')"><img src="img/17お絵描き伝言ゲーム　ポスター 修正版.png" alt="お絵描き伝言ゲーム" width="50" height="71">お絵描き伝言ゲーム</button>
+              <button class="tab-button" onclick="openTab(event, '企画19')"><img src="img/19(修正版)謎解きポスター.png" alt="謎解き企画" width="50" height="71">謎解き企画</button>
+          </div>
+          -->
+          <div class="tabs">
+            <button class="tab-button" onclick="openTab(event, '企画1')">先生企画</button>
+            <button class="tab-button" onclick="openTab(event, '企画2')">ボードゲームカフェ</button>
+            <button class="tab-button" onclick="openTab(event, '企画3')">早押しクイズ</button>
+            <button class="tab-button" onclick="openTab(event, '企画4')">タイピング大会</button>
+            <button class="tab-button" onclick="openTab(event, '企画5')">カラオケ大会</button>
+            <button class="tab-button" onclick="openTab(event, '企画7')">ゼミ企画</button>
+            <button class="tab-button" onclick="openTab(event, '企画17')">お絵描き伝言ゲーム</button>
+            <button class="tab-button" onclick="openTab(event, '企画19')">謎解き企画</button>
+        </div>
+      </div>
+      </div></div>
+      <div id="企画1" class="tab-content">
+          <h3>先生企画</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2, 11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>常時</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>401</td>
+            </tr>
+         </table>
+          <h3>紹介文: 教授と学生の距離が近いiTL。教授と一緒にボードゲームやマリオカートで遊んで大盛り上がりだった様子を撮影して401で放映しています。講義では見られない教授も必見！ひと休みに是非寄ってみてください♫</h3>
+        </div>
+      <div id="企画2" class="tab-content">
+          <h3>ボードゲームカフェ</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2, 11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>10:00~16:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>401</td>
+            </tr>
+         </table> 
+          <h3>紹介文: 大学祭でボードゲームカフェ？ それって楽しそう！受験生にとっては、先輩たちと直接話せるから、気になることや不安なことを気軽に相談できる！これは志望校選びの参考になるし、勉強のモチベーションもアップ！</h3>
+      </div>
+      <div id="企画3" class="tab-content">
+          <h3>早押しクイズ</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2, 11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>11:00~12:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>901</td>
+            </tr>
+         </table>
+          <h3>紹介文: 早押しクイズへようこそ！クイズではiTLで学ぶことのできる情報、法律に加えて雑学分野など様々な出題があり、高成績の方には豪華景品をプレゼント！どなたでも楽しめる内容になっているのでぜひお越しください！</h3>
+      </div>
+      <div id="企画4" class="tab-content">
+          <h3>タイピング大会</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>13:00~15:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>901</td>
+            </tr>
+          </table>
+          <h3>紹介文: 学生オリジナルのタイピングゲームをプレイして、ランキング上位を目指そう！参加者いつでも募集中♪気軽にご参加ください。ハイスコアを出して食販で使える金券をゲットしよう！</h3>
+      </div>
+      <div id="企画5" class="tab-content">
+          <h3>カラオケ大会</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2,11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>【11/2】14:15~15:45 ・【11/3】12:00~15:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>901</td>
+            </tr>
+            </table> 
+          <h3>紹介文: みなさんこんにちは！iTLFest.へようこそ！自由に歌って楽しみましょう🎤✨️90点以上の高得点を取れた方には先着でプレゼントを差し上げます🎁✨️あなたの歌声聴かせてください🙌</h3>
+      </div>
+      <div id="企画7" class="tab-content">
+          <h3>ゼミ企画</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2, 11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>401→未定（定期的に実施）<br>902→【11/2】10:30~11:00, 16:00~16:30 ・【11/3】11:00~11:30, 15:30~16:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>401, 902</td>
+            </tr>
+           </table>
+          <h3>紹介文: 学生全員がゼミに所属しているiTL。ゼミ生が実際行っている研究を紹介してくれます！「SSBJ基準による非財務情報の可視化システム」＠902、「利用規約についてのセミナー&体験会」@401を実施‼</h3>
+      </div>
+      <div id="企画17" class="tab-content">
+          <h3>お絵かき伝言ゲーム</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2, 11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>11:00~12:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>901</td>
+            </tr>
+         </table>
+          <p>実施日程: 11/2, 11/3</p>
+          <p>実施時間: 11:00~12:00</p>
+          <h3>紹介文: 求む！お絵描き伝言ゲーム挑戦者🔥当企画では、5人1チームの2チーム対抗でお絵描き伝言ゲームにチャレンジしていただきます！より的確に伝言できたチームには金券等のプレゼント！奮ってご参加ください！</h3>
+      </div>
+      <div id="企画19" class="tab-content">
+          <h3>謎解き企画</h3>
+          <table>
+            <tr>
+                <th>実施日程</th>
+                <td>11/2, 11/3</td>
+            </tr>
+            <tr>
+                <th>実施時間</th>
+                <td>11:00~12:00</td>
+            </tr>
+            <tr>
+                <th>実施場所</th>
+                <td>901</td>
+            </tr>
+         </table> <p>実施日程: 11/2, 11/3</p>
+          <p>実施時間: 未定</p>
+          <p>実施場所: </p>
+          <h3>紹介文: みなさんこんにちは🙌iTLFest.へようこそ！謎解き企画では、キャンパス全体に謎解きを用意しました！正解できるように頑張ってください😃</h3>
+      </div>
+  </div>      
+
+      <div id="exhibition" class="category">
+          <h2>展示企画</h2>
+          <div class="tabs">
+              <button class="tab-button" onclick="openTab(event, '企画6')">What is GMC!?</button>
+              <button class="tab-button" onclick="openTab(event, '企画8')">AR企画</button>
+              <button class="tab-button" onclick="openTab(event, '企画9')">ペーパーを使ったWebデザイン</button>
+              <button class="tab-button" onclick="openTab(event, '企画10')">Minecraft企画</button>
+              <button class="tab-button" onclick="openTab(event, '企画11')">食品販売</button>
+              <button class="tab-button" onclick="openTab(event, '企画16')">コンテンツプロダクション制作展示会</button>
+              <button class="tab-button" onclick="openTab(event, '企画18')">写真展</button>
+          </div>
+      </div>
+
+    </div>
+    <div id="企画6" class="tab-content">
+        <h3>What is GMC!?</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>常時</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>1002</td>
+          </tr>
+       </table>
+        <h3>紹介文: Hi everyone! GMCです！国際情報学部の国際を担う我々の活動を知ってもらうための展示を1002で開催します！全ての国際人志望者に贈る一大展示をとくとご覧あれ！クイズ大会もお見逃しなく！</h3>
+    </div>
+    <div id="企画8" class="tab-content">
+        <h3>AR企画</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>未定</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td></td>
+          </tr>
+      </table>
+        <h3>紹介文: 初心者こそ来てほしい！！VRの体験企画です！何人でも、どなたでも、大歓迎です！様々なゲームを用意してお待ちしています！お気軽にお越しください！</h3>
+    </div>
+    <div id="企画9" class="tab-content">
+        <h3>ペーパーを使ったWebデザイン</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>常時</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>1003</td>
+          </tr>
+       </table>
+        <h3>紹介文: GDSCはiTL唯一の情報系サークルとして、アプリ開発や勉強会をおこなっています。この企画では開発の第一歩のWebサイトのデザインを皆さんに体験していただけます。作成したアプリもぜひご覧ください✨</h3>
+    </div>
+    <div id="企画10" class="tab-content">
+        <h3>Minecraft企画</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>未定</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>1004</td>
+          </tr>
+       </table>
+        <h3>紹介文: 国際情報学部の学びにちなんで、Minecraftで論理回路を再現しました！Minecraft企画では、数多く学部生がプレイするMinecraftを常設しています。是非お越しください！</h3>
+     </div>
+    <div id="企画11" class="tab-content">
+        <h3>食品販売</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>10:00~16:00</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>1Fコミュニケーションホール</td>
+          </tr>
+       </table>
+        <h3>紹介文: 今年は企画参加でお得に楽しめる新システム！神楽坂の名店The Tee Tokyoの紅茶は、アイスを添えたフロートも新登場。フードメニューは熱々キャラメルポップコーンとこだわりチュロスのラインナップ。</h3>
+    </div>
+    <div id="企画16" class="tab-content">
+        <h3>コンテンツプロダクション制作展示会</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>10:00~17:00</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>8階</td>
+          </tr>
+       </table> 
+        <h3>紹介文: iTLコンテンツプロダクションは、「創る楽しさ」を探求するサークルです。ここでは私たちが創作したイラストやゲーム、音楽や映像などの作品を展示しています。是非立ち寄ってみてはいかがでしょうか？</h3>
+    </div>
+    <div id="企画18" class="tab-content">
+        <h3>写真展</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>未定</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>801</td>
+          </tr>
+       </table>
+        <h3>紹介文: こんにちは！iTL写真部です。902教室にて、作品展示をしています。また、キャンパスを写真で賑やかにしています。探してみてください！出展は今回が初めてです。ぜひ、遊びにいらしてください！</h3>
+    </div>
+
+      <div id="stage" class="category">
+          <h2>ステージ企画</h2>
+          <div class="tabs">
+              <button class="tab-button" onclick="openTab(event, '企画20')">KiLIG</button>
+              <button class="tab-button" onclick="openTab(event, '企画21')">コスプレダンス企画</button>
+              <button class="tab-button" onclick="openTab(event, '企画22')">クラシック音楽演奏企画</button>
+              <button class="tab-button" onclick="openTab(event, '企画23')">iTL MUSiC FESTiVAL 2024</button>
+              <button class="tab-button" onclick="openTab(event, '企画13')">自主制作アニメ上映会</button>
+            </div>
+      </div>
+      <div id="企画20" class="tab-content">
+        <h3>KiLIG</h3>
+        <p>実施日程: 11/3</p>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>13:20~14:00</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>サブステージ</td>
+          </tr>
+       </table> 
+        <h3>紹介文: iTLダンスサークルのKiLIGです！今回のテーマは「Angel」です♡ Jpop、Kpopのカバーダンス、各学年のオリジナル曲や合同曲など魅力たっぷりの構成でみなさんを天国にいる気分にさせますεïз</h3>
+    </div>
+    <div id="企画21" class="tab-content">
+        <h3>コスプレダンス企画</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>12:35~13:15</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>サブステージ</td>
+          </tr>
+       </table> 
+        <h3>紹介文: コスプレをしたメンバーが、ボカロ・アニソン曲で踊ります。あなたの好きなキャラクターにも出会えるかも...!?有志で作り上げたMVも必見です!ぜひ見に来てください♡</h3>
+    </div>
+    <div id="企画22" class="tab-content">
+        <h3>クラシック音楽演奏企画</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>14:00~15:00</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>メインステージ</td>
+          </tr>
+       </table> 
+        <h3>紹介文: ピアノサークルによるクラシック演奏を行います♪有名なクラシックやドラマのテーマ曲など楽しいプログラムとなっております✨ヴァイオリンとのアンサンブル演奏もあります!!一緒にクラシックを楽しみましょう♫</h3>
+    </div>
+    <div id="企画23" class="tab-content">
+        <h3>iTL MUSiC FESTiVAL 2024</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>【11/2】11:00~17:00 ・【11/3】10:00~12:30</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>メインステージ</td>
+          </tr>
+       </table> 
+        <h3>紹介文: こんにちは！iTL軽音楽サークルです✨ 当企画ではバンド演奏はもちろん、弾き語りなども行います！アニソンや最近流行りの曲など、さまざまな曲を演奏しますので、是非お立ち寄りください♪♪</h3>
+    </div>
+
+    <div id="企画13" class="tab-content">
+      <h3>自主制作アニメ上映会</h3>
+      <table>
+        <tr>
+            <th>実施日程</th>
+            <td>11/2, 11/3</td>
+        </tr>
+        <tr>
+            <th>実施時間</th>
+            <td>902→【11/2】11:30~13:30, 301・サブステージ→【11/2】15:30~17:00, 301→【11/3】10:00~11:15</td>
+        </tr>
+        <tr>
+            <th>実施場所</th>
+            <td>301, 901, サブステージ</td>
+        </tr>
+     </table>
+      <h3>紹介文:  中央大学アニメーション研究会(通称CACC)による自主制作アニメの上映会を行います！1980年台から続くアニ研が制作した作品の数々をどうぞご覧ください！</h3>
+    </div>
+
+      <div id="other" class="category">
+          <h2>その他の企画</h2>
+          <div class="tabs">
+              <button class="tab-button" onclick="openTab(event, '企画12')">SF研制作　夏季休暇実験ログ上映</button>
+              <button class="tab-button" onclick="openTab(event, '企画14')">ディズニーフォトブース</button>
+              <button class="tab-button" onclick="openTab(event, '企画15')">vsクイズキッキングスナイパー</button>
+              <button class="tab-button" onclick="openTab(event, '企画24')">ラジオ企画</button>
+          </div>
+      </div>
+      <div id="企画12" class="tab-content">
+        <h3>SF研制作　夏季休暇実験ログ上映</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>902→【11/2】10:00~10:30, 11:00~11:30, 13:30~14:00, 16:30~17:00 ・ 301→【11/3】11:30~13:00, 14:00~17:00
+              </td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>902, 301</td>
+          </tr>
+       </table> 
+        <h3>紹介文:  夏季休暇中に行われた、空間転移に関する実験の映像ログを上映します。専門知識を要求する物ではなく長尺でもありませんのでぜひお越しください。SFをちょっぴりでも好きになっていただけると幸いです！</h3>
+      </div> 
+      <div id="企画14" class="tab-content">
+        <h3>ディズニーフォトブース</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>常時</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>3階廊下</td>
+          </tr>
+       </table> 
+        <h3>紹介文: みなさんこんにちは！ディズニーサークルGUESTです。フォトブースやおすすめの回り方について展示します。新エリアのFantasy Springsについての情報もありますのでぜひ寄ってみてください✨</h3>
+      </div>
+      <div id="企画15" class="tab-content">
+       <h3>vsクイズキッキングスナイパー</h3>
+       <table>
+        <tr>
+            <th>実施日程</th>
+            <td>11/2, 11/3</td>
+        </tr>
+        <tr>
+            <th>実施時間</th>
+            <td>常時</td>
+        </tr>
+        <tr>
+            <th>実施場所</th>
+            <td>701, 702</td>
+        </tr>
+     </table>
+       <h3>紹介文: 学部唯一の運動サークルによるキッキングスナイパーです！クイズで獲得したポイントに応じた数のボールを動く的に向かって蹴り、高得点を目指す企画となっております！たくさんの方々のご来場をお待ちしております！</h3>
+      </div>
+      <div id="企画24" class="tab-content">        
+        <h3>ラジオ企画</h3>
+        <table>
+          <tr>
+              <th>実施日程</th>
+              <td>11/2, 11/3</td>
+          </tr>
+          <tr>
+              <th>実施時間</th>
+              <td>未定</td>
+          </tr>
+          <tr>
+              <th>実施場所</th>
+              <td>秘密</td>
+          </tr>
+       </table> 
+        <h3>紹介文: iTLFest.の酸いも甘いも知るパーソナリティが見どころと裏話をお届け！</h3>
+      </div>
+      
+        <!-- 他の企画も同様に追加 -->
+    </main>
+
+    <script>
+        function scrollToCategory(categoryId) {
+    document.getElementById(categoryId).scrollIntoView({ behavior: 'smooth' });
+        }
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // デフォルトで最初のタブを表示
+        document.getElementsByClassName("tab-button")[0].click();
+    </script>
+</body>
+</html>
+
+<style>/* styles.css */
+   body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #000; /* 背景色を黒に変更 */
+      color: #fff; /* テキストの色を白に変更 */
+      }
+              
+    main {
+      padding: 1rem;
+      }       
+       
+      #introduction {
+      margin-bottom: 2rem; /* 最初の紹介セクションのマージン */
+     }
+              
+   .categories {
+     display: flex; 
+      justify-content: space-around; /* 横並びにしてスペースを均等に */
+      flex-wrap: wrap; /* 必要に応じて折り返す */
+     }
+                 
+   .category-box {
+      background: #555; 
+      padding: 1rem;
+      margin: 0.5rem;
+     border-radius: 5px;
+      text-align: center;
+      flex: 1 1 200px; /* ボックスの最小幅を設定 */
+      }
+              
+    .category {
+      margin-bottom: 1rem; /* セクションの間を狭くする */
+      }
+                
+    .category h2 {
+      text-align: center;
+      padding: 0.5rem;
+     border-radius: 5px;
+     }
+              
+    .tabs {
+      display: flex;
+      flex-wrap: wrap; /* タブが多い場合に折り返す */
+      justify-content: center;
+      margin-bottom: 0.5rem; /* タブの下のマージンを狭くする */
+   }
+              
+   .tab-button {
+      background: #444;
+      color: #fff;
+      border: none;
+     padding: 1rem;
+     cursor: pointer;
+     transition: background 0.3s;
+     margin: 0.2rem; /* タブ間のスペースを追加 */
+   }
+              
+     .tab-button:hover {
+      background: #555;
+   }
+              
+    .tab-button.active {
+     background: #666;
+   }
+              
+    .tab-content {
+      display: none;
+      background: #222; /* セクションの背景色をダークグレーに変更 */
+      margin: 0.5rem 0; /* セクションの間を狭くする */
+      padding: 1rem;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   }
+  
+   .container {
+    display: flex;
+    align-items: flex-start;
+   }
+
+   table {
+      width: 50%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+   }
+
+    th, td {
+     padding: 0.5rem;
+      text-align: middle;
+      border-bottom: 1px solid #444;
+  }
+
+    th {
+      background: #333;
+      color: #fff;
+    }
+              
+  </style>
+              
+    
+
+
+
+
+    <!--フッター情報-->
+    <footer class="footer">
+      <div class="foot-wrap">
+        <div class="menu-left">
+          <h3>お役立ち</h3>
+          <ul class="foot-left">
+            <li><a class="hover-ul" href="SNS.html">外部リンク集</a></li>
+            <li><a class="hover-ul" href="#">Comming soon</a></li>
+            <li><a class="hover-ul" href="#">Comming soon</a></li>
+          </ul>
+        </div>
+        <div class="menu-center">
+          <h3>リンク</h3>
+          <ul class="foot-center">
+            <li><a class="hover-ul" href="access.html">アクセス</a></li>
+            <li><a class="hover-ul" href="question.html">よくある質問</a></li>
+            <li><a class="hover-ul" href="2023/index.html">過年度情報</a></li>
+            
+          </ul>
+        </div>
+        <div class="menu-right">
+          <h3><a class="hover-ul" href="campuses.html">他キャンパスリンク</a></h3>
+          <ul class="foot-right">
+            <li><a class="hover-ul" href="https://hakumonsai.com/">白門祭(多摩)</a></li>
+            <li><a class="hover-ul" href="https://rikohaku.com/">理工白門祭(後楽園)</a></li>
+            <li><a class="hover-ul" href="https://www.hakumon-myougadani.com/">白門祭in茗荷谷(茗荷谷)</a></li>
+          </ul>
+        </div>
+
+        <p>
+        <ul class="footer-logo">
+          <li><a href="https://twitter.com/festival_itl" target="_blank"><img src="img/x_logo.png" width="50"
+                height="50"></a></li>
+          <li><a href="https://www.instagram.com/itlfest_2024/?hl=ja" target="_blank"><img src="img/instagram_logo.png"
+                width="50" height="50" alt="Instagram"></a></li>
+        </ul>
+        </p>
+        <!--コピーライト いじらない-->
+        <p>&copy;iTLFest.実行委員会 All rights reserved.</p>
+      </div>
+    </footer>
+  
+  </div>
+</body>
+
+</html>
