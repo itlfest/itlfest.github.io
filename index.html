@@ -44,8 +44,7 @@
 
 
       <div class="wrapper">
-        <h1 class="heading">iTLFest.2024まで、あと</h1>
-        
+        <h1 class="heading">iTLFest.2024開催から</h1>
 
         <div class="timer">
           <div class="sub_timer">
@@ -64,64 +63,63 @@
             <h2 id="sec" class="digit">00</h2>
             <p class="digit_name">Seconds</p>
           </div>
-          <!-- javascript  -->
-          <script>
-            var target_mili_sec = new Date("Nov 2, 2024 10:00:0").getTime();
-            function timer() {
-              var now_mili_sec = new Date().getTime();
-              var remaining_sec = Math.floor((target_mili_sec - now_mili_sec) / 1000);
-
-              var day = Math.floor(remaining_sec / (3600 * 24));
-              var hour = Math.floor((remaining_sec % (3600 * 24)) / 3600);
-              var min = Math.floor((remaining_sec % 3600) / 60);
-              var sec = Math.floor(remaining_sec % 60);
-
-              document.querySelector("#day").innerHTML = day;
-              document.querySelector("#hour").innerHTML = hour;
-              document.querySelector("#min").innerHTML = min;
-              document.querySelector("#sec").innerHTML = sec;
-            }
-
-            setInterval(timer, 1000); //1000 it means 1 sec
-
-          </script>
-
-          <style>
-            
-
-            .timer {
-              width: 100%;
-              display: flex;
-              justify-content: space-between;
-              margin-top: 30px;
-            }
-
-            .sub_timer {
-              width: 220px;
-              background: rgba(255, 255, 255, 0.19);
-              backdrop-filter: blur(20px);
-              border-radius: 20px;
-              overflow: hidden;
-            }
-
-            .digit {
-              color: #fff;
-              font-weight: lighter;
-              font-size: 70px;
-              text-align: center;
-              padding-top: 2rem;
-              margin: 0%;
-              border: none;
-            }
-
-            .digit_name {
-              color: #000;
-              background: #fff;
-              text-align: center;
-              padding: 0.6rem 0;
-              font-size: 20px;
-            }
-          </style>
+        </div>
+        
+        <script>
+          var target_mili_sec = new Date("Nov 2, 2024 10:00:0").getTime();
+          function timer() {
+            var now_mili_sec = new Date().getTime();
+            var elapsed_sec = Math.floor((now_mili_sec - target_mili_sec) / 1000);
+        
+            var day = Math.floor(elapsed_sec / (3600 * 24));
+            var hour = Math.floor((elapsed_sec % (3600 * 24)) / 3600);
+            var min = Math.floor((elapsed_sec % 3600) / 60);
+            var sec = Math.floor(elapsed_sec % 60);
+        
+            document.querySelector("#day").innerHTML = day < 0 ? 0 : day;
+            document.querySelector("#hour").innerHTML = hour < 0 ? 0 : hour;
+            document.querySelector("#min").innerHTML = min < 0 ? 0 : min;
+            document.querySelector("#sec").innerHTML = sec < 0 ? 0 : sec;
+          }
+        
+          setInterval(timer, 1000);
+        </script>
+        
+        <style>
+          .timer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+          }
+        
+          .sub_timer {
+            width: 220px;
+            background: rgba(255, 255, 255, 0.19);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+          }
+        
+          .digit {
+            color: #fff;
+            font-weight: lighter;
+            font-size: 70px;
+            text-align: center;
+            padding-top: 2rem;
+            margin: 0%;
+            border: none;
+          }
+        
+          .digit_name {
+            color: #000;
+            background: #fff;
+            text-align: center;
+            padding: 0.6rem 0;
+            font-size: 20px;
+          }
+        </style>
+        
         </div>
         
       <h2>お知らせ</h2>
