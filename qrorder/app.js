@@ -26,7 +26,22 @@ const els = {
 };
 
 let products = [];
+
+/*
+ * cart は商品単位で保持する。
+ *
+ * [
+ *   {
+ *     product: {...},
+ *     toppings: [{...}]
+ *   }
+ * ]
+ *
+ * これにより、どのトッピングがどの商品に付いているかを
+ * カート画面上で明確にできる。
+ */
 let cart = [];
+
 let pendingProduct = null;
 let selectedToppings = [];
 let isFoodConfirmation = false;
@@ -40,7 +55,7 @@ const yen = new Intl.NumberFormat("ja-JP", {
 /**
  * URLで表示するメニューセットを指定する。
  *
- * 例:
+ * 対応例:
  * ?1
  * ?1&2
  * ?sets=1
@@ -52,7 +67,9 @@ const yen = new Intl.NumberFormat("ja-JP", {
 function menuCategoriesFromQuery() {
   const query = window.location.search.replace(/^\?/, "");
 
-  if (!query) return null;
+  if (!query) {
+    return null;
+  }
 
   const values = [];
   const params = new URLSearchParams(query);
@@ -64,7 +81,7 @@ function menuCategoriesFromQuery() {
   });
 
   /*
-   * ?1&2 のような形式にも対応
+   * ?1&2 のような簡易形式にも対応
    */
   query.split("&").forEach((token) => {
     const decoded = decodeURIComponent(token.replace(/\+/g, " "));
@@ -88,16 +105,15 @@ function menuCategoriesFromQuery() {
 const selectedMenuCategories = menuCategoriesFromQuery();
 
 /**
- * トッピング商品か判定
+ * トッピング商品かどうかを判定
  */
 function isTopping(product) {
   return String(product.category ?? "").includes("トッピング");
 }
 
 /**
- * CSV文字列を行単位で解析
- *
- * カンマ・改行・ダブルクォート入りのCSVにも対応
+ * CSV文字列を解析する。
+ * ダブルクォート・カンマ・改行入りフィールドにも対応。
  */
 function csvRows(text) {
   const rows = [];
@@ -147,7 +163,7 @@ function csvRows(text) {
 }
 
 /**
- * item.csv を商品オブジェクトへ変換
+ * item.csv を商品オブジェクトに変換
  */
 function csvProducts(text) {
   const [header = [], ...rows] = csvRows(text.replace(/^\uFEFF/, ""));
@@ -161,19 +177,20 @@ function csvProducts(text) {
       name: item.name,
       priceYen: Number(item.priceYen),
       category: item.category,
+
       menuCategory: Number(item.menuCategory) || 1,
+
       sortOrder: Number(item.sortOrder),
+
       orderCode: Number(item.orderCode),
+
       colorCode: Number(item.colorCode) || 1,
 
-      /*
-       * active はQR注文画面でも使用
-       */
       active: String(item.active).toLowerCase() === "true",
 
       /*
-       * soldOut はCSV互換性維持のため読み込むが、
-       * QR注文画面では販売可否判定に使用しない。
+       * CSVフォーマット互換のため読み込むが、
+       * QR注文画面では soldOut は使用しない。
        *
        * 売切れ判定はレジ側で行う。
        */
@@ -192,7 +209,7 @@ function csvProducts(text) {
  * QR注文画面に表示可能な商品
  *
  * soldOut は参照しない。
- * 売切れはレジ側で判断する。
+ * 売切れはレジ側で案内する。
  */
 function availableProducts() {
   return products.filter(
@@ -205,7 +222,7 @@ function availableProducts() {
 }
 
 /**
- * 商品一覧表示
+ * 商品一覧を表示
  */
 function renderProducts() {
   const orderProducts = availableProducts().filter(
@@ -218,19 +235,20 @@ function renderProducts() {
     const button = document.createElement("button");
 
     button.className = "product";
-
     button.dataset.color = String(product.colorCode ?? 1);
 
     button.innerHTML = `
-        <span class="product-name"></span>
-        <span class="price"></span>
-      `;
+      <span class="product-name"></span>
+      <span class="price"></span>
+    `;
 
     button.querySelector(".product-name").textContent = product.name;
 
     button.querySelector(".price").textContent = yen.format(product.priceYen);
 
-    button.onclick = () => openToppingModal(product);
+    button.onclick = () => {
+      openToppingModal(product);
+    };
 
     els.products.append(button);
   });
@@ -243,19 +261,101 @@ function renderProducts() {
 }
 
 /**
- * カート1行
+ * 1注文商品の小計を計算
  */
-function cartRow(product, index) {
-  const row = document.createElement("div");
+function cartItemSubtotal(item) {
+  const basePrice = Number(item.product.priceYen);
 
+  const toppingTotal = item.toppings.reduce(
+    (sum, topping) => sum + Number(topping.priceYen),
+    0,
+  );
+
+  return basePrice + toppingTotal;
+}
+
+/**
+ * カート1商品分を作成
+ */
+function cartRow(item, index) {
+  const row = document.createElement("div");
   row.className = "cart-row";
 
-  const text = document.createElement("span");
+  const content = document.createElement("div");
+  content.className = "cart-item-content";
 
-  text.textContent = `${product.name}　${yen.format(product.priceYen)}`;
+  /*
+   * 親商品
+   */
+  const main = document.createElement("div");
+  main.className = "cart-item-main";
 
+  const mainName = document.createElement("span");
+  mainName.className = "cart-item-name";
+  mainName.textContent = item.product.name;
+
+  const mainPrice = document.createElement("span");
+  mainPrice.className = "cart-item-price";
+  mainPrice.textContent = yen.format(item.product.priceYen);
+
+  main.append(mainName, mainPrice);
+
+  content.append(main);
+
+  /*
+   * 親商品に紐付いたトッピング
+   */
+  if (item.toppings.length) {
+    const toppingArea = document.createElement("div");
+
+    toppingArea.className = "cart-item-toppings";
+
+    item.toppings.forEach((topping) => {
+      const toppingRow = document.createElement("div");
+
+      toppingRow.className = "cart-item-topping";
+
+      const toppingName = document.createElement("span");
+
+      toppingName.className = "cart-topping-name";
+
+      toppingName.textContent = `＋ ${topping.name}`;
+
+      const toppingPrice = document.createElement("span");
+
+      toppingPrice.className = "cart-topping-price";
+
+      toppingPrice.textContent = yen.format(topping.priceYen);
+
+      toppingRow.append(toppingName, toppingPrice);
+
+      toppingArea.append(toppingRow);
+    });
+
+    content.append(toppingArea);
+  }
+
+  /*
+   * 商品＋トッピングの小計
+   */
+  const subtotal = document.createElement("div");
+
+  subtotal.className = "cart-item-subtotal";
+
+  subtotal.textContent = `小計 ${yen.format(cartItemSubtotal(item))}`;
+
+  content.append(subtotal);
+
+  /*
+   * 商品単位で削除
+   *
+   * トッピングもまとめて削除される。
+   */
   const remove = document.createElement("button");
 
+  remove.className = "cart-remove";
+
+  remove.type = "button";
   remove.textContent = "削除";
 
   remove.onclick = () => {
@@ -263,7 +363,7 @@ function cartRow(product, index) {
     renderCart();
   };
 
-  row.append(text, remove);
+  row.append(content, remove);
 
   return row;
 }
@@ -275,13 +375,12 @@ function renderCart() {
   [els.cart, els.cartModalList].forEach((target) => {
     target.replaceChildren();
 
-    cart.forEach((product, index) => target.append(cartRow(product, index)));
+    cart.forEach((item, index) => {
+      target.append(cartRow(item, index));
+    });
   });
 
-  const total = cart.reduce(
-    (sum, product) => sum + Number(product.priceYen),
-    0,
-  );
+  const total = cart.reduce((sum, item) => sum + cartItemSubtotal(item), 0);
 
   [els.total, els.cartModalTotal].forEach((target) => {
     target.textContent = `合計 ${yen.format(total)}`;
@@ -293,11 +392,10 @@ function renderCart() {
 }
 
 /**
- * 商品追加確認・トッピング画面
+ * 商品選択時の確認／トッピング画面
  */
 function openToppingModal(product) {
   pendingProduct = product;
-
   selectedToppings = [];
 
   isFoodConfirmation = !product.toppingAllowed;
@@ -310,9 +408,7 @@ function openToppingModal(product) {
     ? "トッピングを選択（任意）"
     : "この商品を追加しますか？";
 
-  els.modalBase.textContent = `${product.name}　${yen.format(
-    product.priceYen,
-  )}`;
+  els.modalBase.textContent = `${product.name}　${yen.format(product.priceYen)}`;
 
   els.toppings.replaceChildren();
 
@@ -324,14 +420,15 @@ function openToppingModal(product) {
     const button = document.createElement("button");
 
     button.className = "topping";
+    button.type = "button";
 
     button.setAttribute("aria-pressed", "false");
 
     button.innerHTML = `
-        <span class="topping-name"></span>
-        <span class="price"></span>
-        <span class="topping-state">追加する</span>
-      `;
+      <span class="topping-name"></span>
+      <span class="price"></span>
+      <span class="topping-state">追加する</span>
+    `;
 
     button.querySelector(".topping-name").textContent = topping.name;
 
@@ -370,7 +467,7 @@ function openToppingModal(product) {
 }
 
 /**
- * 商品追加モーダルの金額表示
+ * 商品追加モーダルの小計更新
  */
 function updateModalTotal() {
   const total = [pendingProduct, ...selectedToppings]
@@ -388,18 +485,21 @@ function updateModalTotal() {
 
 /**
  * 商品をカートへ追加
+ *
+ * 親商品とトッピングを1セットとして保持する。
  */
 function addPending(withToppings) {
-  if (!pendingProduct) return;
-
-  cart.push(pendingProduct);
-
-  if (withToppings) {
-    cart.push(...selectedToppings);
+  if (!pendingProduct) {
+    return;
   }
 
-  pendingProduct = null;
+  cart.push({
+    product: pendingProduct,
 
+    toppings: withToppings ? [...selectedToppings] : [],
+  });
+
+  pendingProduct = null;
   selectedToppings = [];
 
   els.modal.hidden = true;
@@ -408,11 +508,10 @@ function addPending(withToppings) {
 }
 
 /**
- * 商品追加キャンセル
+ * 商品追加をキャンセル
  */
 function cancelPending() {
   pendingProduct = null;
-
   selectedToppings = [];
 
   els.modal.hidden = true;
@@ -429,13 +528,33 @@ function clearCart() {
 /**
  * 注文QR生成
  *
+ * QRのフォーマットは従来から変更しない。
+ *
+ * FPO1:商品コード+トッピングコード+商品コード...
+ *
  * 例:
- * FPO1:1+3+11
+ *
+ * リンゴジュース 7
+ *   └ タピオカ 11
+ * リンゴジュース 7
+ *
+ * ↓
+ *
+ * FPO1:7+11+7
  */
 function generateQr() {
-  const text = `FPO1:${cart
-    .map((product) => Number(product.orderCode))
-    .join("+")}`;
+  /*
+   * カート表示上では
+   * 商品とトッピングをグループ化しているが、
+   * QR生成時には従来どおり平坦化する。
+   */
+  const orderCodes = cart.flatMap((item) => [
+    Number(item.product.orderCode),
+
+    ...item.toppings.map((topping) => Number(topping.orderCode)),
+  ]);
+
+  const text = `FPO1:${orderCodes.join("+")}`;
 
   els.qr.replaceChildren();
 
@@ -443,6 +562,7 @@ function generateQr() {
     text,
     width: 250,
     height: 250,
+
     correctLevel: window.QRCode.CorrectLevel.M,
   });
 
@@ -457,7 +577,9 @@ function generateQr() {
 
 els.skip.onclick = cancelPending;
 
-els.add.onclick = () => addPending(true);
+els.add.onclick = () => {
+  addPending(true);
+};
 
 els.clear.onclick = clearCart;
 
@@ -480,7 +602,7 @@ els.qrModalClose.onclick = () => {
 /**
  * 商品情報読み込み
  *
- * Firebase / Firestore は一切使用しない。
+ * Firebase / Firestore は使用しない。
  * GitHub Pages上の item.csv のみ参照する。
  */
 fetch("./item.csv", {
@@ -506,6 +628,7 @@ fetch("./item.csv", {
     els.notice.textContent = "";
 
     renderProducts();
+    renderCart();
   })
   .catch((error) => {
     console.error(error);
