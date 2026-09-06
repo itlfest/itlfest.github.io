@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#14213d" />
+    <title>注文QR作成 | 学園祭POS</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  </head>
+  <body>
+    <header class="topbar"><div><p class="eyebrow">FESTIVAL POS</p><h1>注文QRを作成</h1></div><p id="connection">商品を読み込み中</p></header>
+    <main class="layout">
+      <section class="panel product-panel"><div class="section-heading"><div><h2>商品を選択</h2><p>商品を選ぶと、トッピングの追加を確認します。</p></div></div><p id="notice" class="notice"></p><div id="product-grid" class="product-grid"></div></section>
+      <aside class="panel cart-panel"><h2>注文内容</h2><div id="cart" class="cart"></div><p id="total" class="total">合計 ¥0</p><button id="clear-button" class="button secondary" type="button">注文をクリア</button></aside>
+      <div class="order-qr-action"><button id="cart-button" class="button secondary cart-icon-button" type="button" aria-label="カート内容" title="カート内容"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L20 8H6.4"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></button><button id="generate-button" class="button primary" disabled>注文用QRコードを表示</button></div>
+    </main>
+    <div id="topping-modal" class="modal-backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><h2 id="modal-title">トッピングを追加しますか？</h2><p id="modal-base" class="modal-base"></p><div id="topping-grid" class="topping-grid"></div><p id="modal-total" class="modal-total"></p><div class="modal-actions"><button id="add-with-topping" class="button primary" type="button">追加</button><button id="skip-topping" class="button secondary" type="button">キャンセル</button></div></section></div>
+    <div id="cart-modal" class="modal-backdrop" hidden><section class="modal cart-modal" role="dialog" aria-modal="true"><h2>カート内容</h2><div id="cart-modal-list" class="cart"></div><p id="cart-modal-total" class="total">合計 ¥0</p><div class="modal-actions"><button id="cart-modal-clear" class="button secondary" type="button">注文をクリア</button><button id="cart-modal-close" class="button primary" type="button">閉じる</button></div></section></div>
+    <div id="qr-modal" class="modal-backdrop" hidden><section class="modal qr-modal" role="dialog" aria-modal="true"><h2>このQRをレジで読み取ってください</h2><div id="qr-code" class="qr-code"></div><p id="qr-text" class="qr-text"></p><button id="qr-modal-close" class="button primary" type="button">閉じる</button></section></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
