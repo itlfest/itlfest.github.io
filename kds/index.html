@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111c36" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="KDS" />
+    <title>学園祭POS KDS</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">FESTIVAL POS</p>
+        <h1>キッチン表示</h1>
+      </div>
+      <div class="header-actions">
+        <span id="connection-status" class="connection">接続確認中</span>
+        <button id="demo-button" class="button secondary" type="button">デモ注文</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="pin-lock" class="login-message panel">
+        <h2>KDSを開始</h2>
+        <p>厨房用PINを入力してください。</p>
+        <div class="pin-row"><input id="pin-input" type="password" inputmode="numeric" maxlength="4" autocomplete="off" autofocus /><button id="unlock-button" class="button primary" type="button">表示を開始</button></div>
+        <p id="pin-error" class="notice"></p>
+      </section>
+
+      <section id="kds-app" hidden>
+        <div class="toolbar">
+          <div id="summary" class="summary"></div>
+          <div id="filters" class="filters" aria-label="表示する注文の状態"></div>
+        </div>
+        <p id="notice" class="notice" role="status"></p>
+        <div id="orders" class="orders" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <template id="order-template">
+      <article class="order-card">
+        <header class="order-header">
+          <div>
+            <p class="order-number"></p>
+            <p class="order-meta"></p>
+          </div>
+          <span class="state-badge"></span>
+        </header>
+        <div class="order-lines"></div>
+        <footer class="order-actions"></footer>
+      </article>
+    </template>
+
+    <script type="module" src="app-v2.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch((error) => {
+            console.warn("Service Worker registration failed:", error);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

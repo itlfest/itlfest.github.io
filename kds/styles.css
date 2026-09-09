@@ -1,0 +1,90 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  color: #14213d;
+  background: #edf1f6;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+h1, h2, h3, p { margin: 0; }
+
+.topbar {
+  min-height: 94px;
+  padding: 18px clamp(20px, 4vw, 56px);
+  background: #111c36;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.eyebrow { margin-bottom: 4px; color: #8bd3ff; font-size: 12px; font-weight: 800; letter-spacing: .14em; }
+h1 { font-size: clamp(25px, 3vw, 34px); }
+.header-actions, .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.connection { font-size: 14px; font-weight: 800; color: #b7c7e7; }
+.connection.online { color: #83e5aa; }
+.connection.error { color: #ffb6bd; }
+
+.button {
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.primary { color: #fff; background: #2879d4; }
+.secondary { color: #14213d; background: #e6ecf5; }
+.button:disabled { opacity: .5; cursor: wait; }
+
+main { max-width: 1680px; margin: 0 auto; padding: 26px clamp(14px, 3vw, 40px) 42px; }
+.panel { background: #fff; border-radius: 16px; box-shadow: 0 3px 14px rgb(20 33 61 / 12%); }
+.login-message { max-width: 560px; margin: 70px auto; padding: 30px; text-align: center; }
+.login-message h2 { margin-bottom: 12px; }
+.login-message p { color: #667085; line-height: 1.7; }
+.pin-row { display: flex; max-width: 360px; margin: 18px auto 0; gap: 10px; }
+.pin-row input { min-width: 0; flex: 1; min-height: 46px; padding: 8px 12px; border: 1px solid #aebbd0; border-radius: 9px; font: inherit; font-size: 22px; text-align: center; letter-spacing: .3em; }
+
+.toolbar { display: flex; justify-content: space-between; gap: 18px; align-items: center; margin-bottom: 16px; }
+.summary { color: #5f6f87; font-weight: 700; }
+.filter { background: #fff; border: 1px solid #cbd5e3; color: #526178; }
+.filter.active { background: #14213d; border-color: #14213d; color: #fff; }
+.notice { min-height: 23px; margin: 0 0 12px; color: #b42318; font-weight: 700; }
+
+.orders { display: grid; grid-template-columns: repeat(auto-fill, 330px); gap: 18px; align-items: start; justify-content: start; }
+.order-card { overflow: hidden; border: 2px solid #d7e0ec; border-radius: 16px; background: #fff; box-shadow: 0 3px 11px rgb(20 33 61 / 10%); }
+.order-card[data-state="COOKING"] { border-color: #2d83dc; }
+.order-card[data-state="CALLING"] { border-color: #47a66b; }
+.order-card[data-state="CANCELLED"] { border-color: #db4b5c; opacity: .75; }
+.order-header { min-height: 104px; padding: 16px 18px; color: #fff; background: #2d83dc; display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.order-card[data-state="CALLING"] .order-header, .order-card[data-state="DONE"] .order-header { background: #39885a; }
+.order-card[data-state="CANCELLED"] .order-header { background: #bd3445; }
+.order-number { font-size: clamp(32px, 4vw, 48px); font-weight: 900; line-height: 1; letter-spacing: .02em; }
+.order-meta { margin-top: 9px; font-size: 14px; font-weight: 700; opacity: .95; }
+.state-badge { flex-shrink: 0; padding: 6px 9px; border: 1px solid rgb(255 255 255 / 55%); border-radius: 999px; font-size: 13px; font-weight: 800; }
+
+.order-lines { padding: 14px 16px 4px; display: grid; gap: 12px; }
+.dish { padding-bottom: 12px; border-bottom: 1px solid #e4eaf2; }
+.dish:last-child { border-bottom: 0; }
+.dish-main { font-size: 23px; font-weight: 900; line-height: 1.3; }
+.toppings { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.topping { padding: 5px 8px; border-radius: 7px; background: #fff0d5; color: #7a4b00; font-size: 15px; font-weight: 800; }
+.single-topping .dish-main { color: #8d4d00; }
+.single-topping .topping { background: #fee2b8; }
+
+.order-actions { min-height: 76px; padding: 12px 16px 16px; display: grid; grid-template-columns: 1fr; gap: 8px; }
+.state-action { min-height: 50px; border: 0; border-radius: 9px; color: #fff; background: #236fc0; font: inherit; font-size: 18px; font-weight: 900; cursor: pointer; }
+.order-card[data-state="CALLING"] .state-action { background: #317a50; }
+.order-card[data-state="CANCELLED"] .state-action { background: #9c2636; }
+.empty { grid-column: 1 / -1; padding: 50px 20px; text-align: center; color: #667085; font-size: 20px; }
+
+@media (max-width: 720px) {
+  .topbar, .toolbar { align-items: stretch; flex-direction: column; }
+  .header-actions { justify-content: start; }
+  .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
+  .filter { flex: 0 0 auto; }
+  .pin-row { align-items: stretch; flex-direction: column; }
+  .orders { grid-template-columns: minmax(0, 330px); justify-content: center; }
+}

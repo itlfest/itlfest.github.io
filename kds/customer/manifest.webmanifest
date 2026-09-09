@@ -1,0 +1,18 @@
+{
+  "name": "学園祭POS お呼び出し番号",
+  "short_name": "呼出番号",
+  "description": "学園祭POSのお客様向け呼び出し番号表示",
+  "start_url": "/kds/customer/",
+  "scope": "/kds/customer/",
+  "display": "standalone",
+  "background_color": "#111c36",
+  "theme_color": "#111c36",
+  "icons": [
+    {
+      "src": "../icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
