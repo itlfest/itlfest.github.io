@@ -73,10 +73,12 @@ export default {
         "X-Coefont-Date": timestamp,
         "X-Coefont-Content": signed
       },
-      body: payload
+      body: payload,
+      redirect: "follow"
     });
 
     if (!coefontResponse.ok) {
+      console.error("CoeFont request failed", { status: coefontResponse.status });
       return response("CoeFont request failed", 502, cors);
     }
 
