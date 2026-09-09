@@ -9,6 +9,7 @@ function corsHeaders(request, env) {
     "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
     "Vary": "Origin"
   };
 }
@@ -46,6 +47,9 @@ export default {
     if (!env.COEFONT_ACCESS_KEY || !env.COEFONT_ACCESS_SECRET || !env.COEFONT_ID) {
       return response("Worker is not configured", 503, cors);
     }
+    const sourceIp = request.headers.get("CF-Connecting-IP") ?? "unknown";
+    const rateLimit = await env.ANNOUNCEMENT_RATE_LIMIT.limit({ key: sourceIp });
+    if (!rateLimit.success) return response("Too Many Requests", 429, cors);
 
     let input;
     try {
@@ -54,7 +58,7 @@ export default {
       return response("Invalid JSON", 400, cors);
     }
 
-    const text = announcementText(input.numbers);
+    const text = announcementText(input?.numbers);
     if (!text) return response("Invalid numbers", 400, cors);
 
     const payload = JSON.stringify({
@@ -77,13 +81,17 @@ export default {
       body: payload
     });
 
-    const audioUrl = coefontResponse.headers.get("Location");
-    if (coefontResponse.status !== 302 || !audioUrl) {
-      console.error("CoeFont request failed", { status: coefontResponse.status });
+    let audioResponse = coefontResponse;
+    if (coefontResponse.status === 302) {
+      const audioUrl = coefontResponse.headers.get("Location");
+      if (!audioUrl) return response("CoeFont request failed", 502, cors);
+      audioResponse = await fetch(audioUrl);
+    } else if (!coefontResponse.ok) {
+      const detail = (await coefontResponse.text().catch(() => "")).slice(0, 500);
+      console.error("CoeFont request failed", { status: coefontResponse.status, detail });
       return response("CoeFont request failed", 502, cors);
     }
 
-    const audioResponse = await fetch(audioUrl);
     if (!audioResponse.ok) {
       console.error("CoeFont audio download failed", { status: audioResponse.status });
       return response("CoeFont audio download failed", 502, cors);
