@@ -67,26 +67,33 @@ export default {
     const signed = await signature(env.COEFONT_ACCESS_SECRET, timestamp, payload);
     const coefontResponse = await fetch("https://api.coefont.cloud/v2/text2speech", {
       method: "POST",
+      redirect: "manual",
       headers: {
         "Content-Type": "application/json",
         "Authorization": env.COEFONT_ACCESS_KEY,
         "X-Coefont-Date": timestamp,
         "X-Coefont-Content": signed
       },
-      body: payload,
-      redirect: "follow"
+      body: payload
     });
 
-    if (!coefontResponse.ok) {
+    const audioUrl = coefontResponse.headers.get("Location");
+    if (coefontResponse.status !== 302 || !audioUrl) {
       console.error("CoeFont request failed", { status: coefontResponse.status });
       return response("CoeFont request failed", 502, cors);
     }
 
-    return new Response(coefontResponse.body, {
+    const audioResponse = await fetch(audioUrl);
+    if (!audioResponse.ok) {
+      console.error("CoeFont audio download failed", { status: audioResponse.status });
+      return response("CoeFont audio download failed", 502, cors);
+    }
+
+    return new Response(audioResponse.body, {
       headers: {
         ...cors,
         "Cache-Control": "no-store",
-        "Content-Type": coefontResponse.headers.get("Content-Type") ?? "audio/mpeg"
+        "Content-Type": audioResponse.headers.get("Content-Type") ?? "audio/mpeg"
       }
     });
   }
