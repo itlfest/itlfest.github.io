@@ -1,0 +1,6 @@
+name = "coefont-kds"
+main = "worker.js"
+compatibility_date = "2025-02-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://itlfest.github.io"
