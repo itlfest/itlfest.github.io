@@ -158,7 +158,7 @@ voiceButton.addEventListener("click", () => {
   clearPendingAnnouncements();
   updateVoiceButton();
 
-  if (voiceEnabled) {
+  if (voiceEnabled && "speechSynthesis" in window) {
     const confirmation = new SpeechSynthesisUtterance("音声案内を開始しました。");
     confirmation.lang = "ja-JP";
     confirmation.rate = 0.95;
