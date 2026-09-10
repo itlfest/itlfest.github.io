@@ -169,10 +169,13 @@ async function speakWithCoeFont(exchangeNumbers) {
       clearCoeFontAudio();
     }
   } catch (error) {
-    if (timedOut) {
-      const timeoutError = new Error("CoeFont request timed out");
-      timeoutError.name = "TimeoutError";
-      throw timeoutError;
+    // AbortError は fetch の中断だけでなく、play() が再生を中断されたとき
+    // （他アプリの音声や着信による iOS のオーディオセッション中断など）にも発生する。
+    // 後者は本物の失敗なのでフォールバックさせたい。signal を見れば出所を区別できる。
+    if (error.name === "AbortError" && controller.signal.aborted) {
+      const aborted = new Error(timedOut ? "CoeFont request timed out" : "CoeFont request cancelled");
+      aborted.name = timedOut ? "TimeoutError" : "CancelledError";
+      throw aborted;
     }
     throw error;
   } finally {
@@ -192,7 +195,7 @@ async function speakNumbers(exchangeNumbers) {
     await speakWithCoeFont(exchangeNumbers);
     coefontFailures = 0;
   } catch (error) {
-    if (error.name === "AbortError" || !voiceEnabled) return;
+    if (error.name === "CancelledError" || !voiceEnabled) return;
     console.warn("CoeFont announcement failed. Falling back to browser speech.", error);
     coefontFailures += 1;
     if (coefontFailures >= COEFONT_MAX_FAILURES) {
