@@ -84,7 +84,10 @@ export default {
     let audioResponse = coefontResponse;
     if (coefontResponse.status === 302) {
       const audioUrl = coefontResponse.headers.get("Location");
-      if (!audioUrl) return response("CoeFont request failed", 502, cors);
+      if (!audioUrl) {
+        console.error("CoeFont redirect response is missing Location", { status: coefontResponse.status });
+        return response("CoeFont request failed", 502, cors);
+      }
       audioResponse = await fetch(audioUrl);
     } else if (!coefontResponse.ok) {
       const detail = (await coefontResponse.text().catch(() => "")).slice(0, 500);
@@ -92,8 +95,9 @@ export default {
       return response("CoeFont request failed", 502, cors);
     }
 
-    if (!audioResponse.ok) {
-      console.error("CoeFont audio download failed", { status: audioResponse.status });
+    const contentType = audioResponse.headers.get("Content-Type") ?? "";
+    if (!audioResponse.ok || !contentType.toLowerCase().startsWith("audio/")) {
+      console.error("CoeFont audio download failed", { status: audioResponse.status, contentType });
       return response("CoeFont audio download failed", 502, cors);
     }
 
@@ -101,7 +105,7 @@ export default {
       headers: {
         ...cors,
         "Cache-Control": "no-store",
-        "Content-Type": audioResponse.headers.get("Content-Type") ?? "audio/mpeg"
+        "Content-Type": contentType
       }
     });
   }

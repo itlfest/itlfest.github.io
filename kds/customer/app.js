@@ -16,7 +16,7 @@ const connection = document.querySelector("#connection");
 const voiceButton = document.querySelector("#voice-toggle");
 
 const ANNOUNCEMENT_WAIT_MS = 1000;
-const COEFONT_TIMEOUT_MS = 6000;
+const COEFONT_TIMEOUT_MS = 8000;
 const COEFONT_MAX_FAILURES = 2;
 const COEFONT_COOLDOWN_MS = 5 * 60 * 1000;
 
@@ -114,7 +114,8 @@ function unlockCoeFontAudio() {
   coefontAudio.addEventListener("ended", releaseSilence, { once: true });
   void coefontAudio.play().then(() => {
     coefontAudioUnlocked = true;
-  }).catch(() => {
+  }).catch((error) => {
+    console.warn("CoeFont audio unlock failed. Browser speech will be used.", error);
     coefontAudio.removeAttribute("src");
     releaseSilence();
   });
@@ -127,7 +128,11 @@ async function speakWithCoeFont(exchangeNumbers) {
 
   const controller = new AbortController();
   coefontRequestAbort = controller;
-  const timeout = window.setTimeout(() => controller.abort(), COEFONT_TIMEOUT_MS);
+  let timedOut = false;
+  const timeout = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, COEFONT_TIMEOUT_MS);
   try {
     const result = await fetch(coefontProxyUrl, {
       method: "POST",
@@ -135,7 +140,10 @@ async function speakWithCoeFont(exchangeNumbers) {
       body: JSON.stringify({ numbers: exchangeNumbers }),
       signal: controller.signal
     });
-    if (!result.ok) throw new Error(`CoeFont Worker returned ${result.status}`);
+    if (!result.ok) {
+      const detail = await result.text().catch(() => "");
+      throw new Error(`CoeFont Worker returned ${result.status}: ${detail.slice(0, 200)}`);
+    }
 
     const audioUrl = URL.createObjectURL(await result.blob());
     clearCoeFontAudio();
@@ -160,6 +168,13 @@ async function speakWithCoeFont(exchangeNumbers) {
     } finally {
       clearCoeFontAudio();
     }
+  } catch (error) {
+    if (timedOut) {
+      const timeoutError = new Error("CoeFont request timed out");
+      timeoutError.name = "TimeoutError";
+      throw timeoutError;
+    }
+    throw error;
   } finally {
     window.clearTimeout(timeout);
     if (coefontRequestAbort === controller) coefontRequestAbort = null;
@@ -177,6 +192,7 @@ async function speakNumbers(exchangeNumbers) {
     await speakWithCoeFont(exchangeNumbers);
     coefontFailures = 0;
   } catch (error) {
+    if (error.name === "AbortError" || !voiceEnabled) return;
     console.warn("CoeFont announcement failed. Falling back to browser speech.", error);
     coefontFailures += 1;
     if (coefontFailures >= COEFONT_MAX_FAILURES) {
