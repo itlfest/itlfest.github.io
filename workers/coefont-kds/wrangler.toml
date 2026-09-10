@@ -1,0 +1,17 @@
+name = "coefont-kds"
+main = "worker.js"
+compatibility_date = "2025-02-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://itlfest.github.io"
+
+[observability]
+enabled = true
+
+[[ratelimits]]
+name = "ANNOUNCEMENT_RATE_LIMIT"
+namespace_id = "920260910"
+
+  [ratelimits.simple]
+  limit = 30
+  period = 10
