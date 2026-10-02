@@ -560,8 +560,8 @@ function generateQr() {
 
   new window.QRCode(els.qr, {
     text,
-    width: 250,
-    height: 250,
+    width: 125,
+    height: 125,
 
     correctLevel: window.QRCode.CorrectLevel.M,
   });
