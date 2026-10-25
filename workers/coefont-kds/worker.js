@@ -3,7 +3,8 @@ const announcementSuffix = "のお客様、お待たせいたしました。商�
 
 function corsHeaders(request, env) {
   const origin = request.headers.get("Origin");
-  if (origin !== env.ALLOWED_ORIGIN) return null;
+  const allowedOrigins = (env.ALLOWED_ORIGIN ?? "").split(",").map((value) => value.trim()).filter(Boolean);
+  if (!origin || !allowedOrigins.includes(origin)) return null;
 
   return {
     "Access-Control-Allow-Origin": origin,
