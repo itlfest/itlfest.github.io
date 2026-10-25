@@ -6,9 +6,11 @@ KDS の呼び出し番号を CoeFont 音声へ変換する Cloudflare Worker で
 
 1. Cloudflare にログインして Wrangler を認証する。
 2. このディレクトリで `npx wrangler secret put COEFONT_ACCESS_KEY`、`npx wrangler secret put COEFONT_ACCESS_SECRET`、`npx wrangler secret put COEFONT_ID` を実行し、それぞれの値を入力する。
-3. `wrangler.toml` の `ALLOWED_ORIGIN` が KDS を公開するオリジンと一致していることを確認する。
+3. `wrangler.toml` の `ALLOWED_ORIGIN` に KDS を公開するオリジンをカンマ区切りで指定する。既定では `https://itlfest.github.io` と `https://itlfest.com` を許可する。スキームを含め、末尾の `/` は付けない。
 4. `npx wrangler deploy` を実行する。
 5. デプロイ結果の Worker URL を `kds/customer/coefont-config.js` の `coefontProxyUrl` に設定する。
+
+`ALLOWED_ORIGIN` を変更した場合は `npx wrangler deploy` で Worker を再デプロイする。許可リストはオリジンの完全一致で判定し、サブドメインは自動では許可しない。
 
 Worker は番号の配列しか受け付けず、読み上げ文はサーバー側で固定しています。CoeFont が失敗した場合、表示画面はブラウザ標準音声へ自動でフォールバックします。
 
