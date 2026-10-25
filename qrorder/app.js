@@ -16,35 +16,19 @@ const els = {
   qrModalClose: document.querySelector("#qr-modal-close"),
   qr: document.querySelector("#qr-code"),
   qrText: document.querySelector("#qr-text"),
-  modal: document.querySelector("#topping-modal"),
+  modal: document.querySelector("#product-modal"),
   modalTitle: document.querySelector("#modal-title"),
   modalBase: document.querySelector("#modal-base"),
-  toppings: document.querySelector("#topping-grid"),
   modalTotal: document.querySelector("#modal-total"),
-  skip: document.querySelector("#skip-topping"),
-  add: document.querySelector("#add-with-topping"),
+  cancel: document.querySelector("#cancel-product"),
+  add: document.querySelector("#add-product"),
 };
 
 let products = [];
 
-/*
- * cart は商品単位で保持する。
- *
- * [
- *   {
- *     product: {...},
- *     toppings: [{...}]
- *   }
- * ]
- *
- * これにより、どのトッピングがどの商品に付いているかを
- * カート画面上で明確にできる。
- */
+// カートは商品単位で保持する。
 let cart = [];
-
 let pendingProduct = null;
-let selectedToppings = [];
-let isFoodConfirmation = false;
 
 const yen = new Intl.NumberFormat("ja-JP", {
   style: "currency",
@@ -198,8 +182,6 @@ function csvProducts(text) {
 
       voucherEligible: String(item.voucherEligible).toLowerCase() === "true",
 
-      toppingAllowed: String(item.toppingAllowed).toLowerCase() === "true",
-
       useKDS: item.useKDS?.toLowerCase() !== "false",
     }))
     .filter((item) => item.id && item.name && Number.isFinite(item.priceYen));
@@ -215,6 +197,7 @@ function availableProducts() {
   return products.filter(
     (product) =>
       product.active &&
+      !isTopping(product) &&
       Number(product.orderCode) > 0 &&
       (!selectedMenuCategories ||
         selectedMenuCategories.has(product.menuCategory)),
@@ -225,9 +208,7 @@ function availableProducts() {
  * 商品一覧を表示
  */
 function renderProducts() {
-  const orderProducts = availableProducts().filter(
-    (product) => !isTopping(product),
-  );
+  const orderProducts = availableProducts();
 
   els.products.replaceChildren();
 
@@ -247,7 +228,7 @@ function renderProducts() {
     button.querySelector(".price").textContent = yen.format(product.priceYen);
 
     button.onclick = () => {
-      openToppingModal(product);
+      openProductModal(product);
     };
 
     els.products.append(button);
@@ -264,14 +245,7 @@ function renderProducts() {
  * 1注文商品の小計を計算
  */
 function cartItemSubtotal(item) {
-  const basePrice = Number(item.product.priceYen);
-
-  const toppingTotal = item.toppings.reduce(
-    (sum, topping) => sum + Number(topping.priceYen),
-    0,
-  );
-
-  return basePrice + toppingTotal;
+  return Number(item.product.priceYen);
 }
 
 /**
@@ -285,7 +259,7 @@ function cartRow(item, index) {
   content.className = "cart-item-content";
 
   /*
-   * 親商品
+   * 商品
    */
   const main = document.createElement("div");
   main.className = "cart-item-main";
@@ -303,40 +277,7 @@ function cartRow(item, index) {
   content.append(main);
 
   /*
-   * 親商品に紐付いたトッピング
-   */
-  if (item.toppings.length) {
-    const toppingArea = document.createElement("div");
-
-    toppingArea.className = "cart-item-toppings";
-
-    item.toppings.forEach((topping) => {
-      const toppingRow = document.createElement("div");
-
-      toppingRow.className = "cart-item-topping";
-
-      const toppingName = document.createElement("span");
-
-      toppingName.className = "cart-topping-name";
-
-      toppingName.textContent = `＋ ${topping.name}`;
-
-      const toppingPrice = document.createElement("span");
-
-      toppingPrice.className = "cart-topping-price";
-
-      toppingPrice.textContent = yen.format(topping.priceYen);
-
-      toppingRow.append(toppingName, toppingPrice);
-
-      toppingArea.append(toppingRow);
-    });
-
-    content.append(toppingArea);
-  }
-
-  /*
-   * 商品＋トッピングの小計
+   * 商品の小計
    */
   const subtotal = document.createElement("div");
 
@@ -348,8 +289,6 @@ function cartRow(item, index) {
 
   /*
    * 商品単位で削除
-   *
-   * トッピングもまとめて削除される。
    */
   const remove = document.createElement("button");
 
@@ -392,118 +331,27 @@ function renderCart() {
 }
 
 /**
- * 商品選択時の確認／トッピング画面
+ * 商品選択時の追加確認
  */
-function openToppingModal(product) {
+function openProductModal(product) {
   pendingProduct = product;
-  selectedToppings = [];
-
-  isFoodConfirmation = !product.toppingAllowed;
-
-  const toppings = product.toppingAllowed
-    ? availableProducts().filter(isTopping)
-    : [];
-
-  els.modalTitle.textContent = toppings.length
-    ? "トッピングを選択（任意）"
-    : "この商品を追加しますか？";
-
+  els.modalTitle.textContent = "この商品を追加しますか？";
   els.modalBase.textContent = `${product.name}　${yen.format(product.priceYen)}`;
-
-  els.toppings.replaceChildren();
-
-  els.toppings.hidden = !toppings.length;
-
-  els.skip.hidden = false;
-
-  toppings.forEach((topping) => {
-    const button = document.createElement("button");
-
-    button.className = "topping";
-    button.type = "button";
-
-    button.setAttribute("aria-pressed", "false");
-
-    button.innerHTML = `
-      <span class="topping-name"></span>
-      <span class="price"></span>
-      <span class="topping-state">追加する</span>
-    `;
-
-    button.querySelector(".topping-name").textContent = topping.name;
-
-    button.querySelector(".price").textContent = yen.format(topping.priceYen);
-
-    const state = button.querySelector(".topping-state");
-
-    button.onclick = () => {
-      const index = selectedToppings.findIndex(
-        (item) => item.id === topping.id,
-      );
-
-      const selected = index < 0;
-
-      if (selected) {
-        selectedToppings.push(topping);
-      } else {
-        selectedToppings.splice(index, 1);
-      }
-
-      button.classList.toggle("selected", selected);
-
-      button.setAttribute("aria-pressed", String(selected));
-
-      state.textContent = selected ? "✓ 追加中" : "追加する";
-
-      updateModalTotal();
-    };
-
-    els.toppings.append(button);
-  });
-
-  updateModalTotal();
-
+  els.modalTotal.textContent = `この商品小計 ${yen.format(product.priceYen)}`;
   els.modal.hidden = false;
 }
 
 /**
- * 商品追加モーダルの小計更新
- */
-function updateModalTotal() {
-  const total = [pendingProduct, ...selectedToppings]
-    .filter(Boolean)
-    .reduce((sum, product) => sum + Number(product.priceYen), 0);
-
-  els.modalTotal.textContent = `この商品小計 ${yen.format(total)}`;
-
-  els.add.textContent = isFoodConfirmation
-    ? "追加"
-    : selectedToppings.length
-      ? "トッピングありで追加"
-      : "トッピングなしで追加";
-}
-
-/**
  * 商品をカートへ追加
- *
- * 親商品とトッピングを1セットとして保持する。
  */
-function addPending(withToppings) {
+function addPending() {
   if (!pendingProduct) {
     return;
   }
 
-  cart.push({
-    product: pendingProduct,
-
-    toppings: withToppings ? [...selectedToppings] : [],
-  });
-
+  cart.push({ product: pendingProduct });
   pendingProduct = null;
-  selectedToppings = [];
-
   els.modal.hidden = true;
-
   renderCart();
 }
 
@@ -512,8 +360,6 @@ function addPending(withToppings) {
  */
 function cancelPending() {
   pendingProduct = null;
-  selectedToppings = [];
-
   els.modal.hidden = true;
 }
 
@@ -526,33 +372,11 @@ function clearCart() {
 }
 
 /**
- * 注文QR生成
- *
- * QRのフォーマットは従来から変更しない。
- *
- * FPO1:商品コード+トッピングコード+商品コード...
- *
- * 例:
- *
- * リンゴジュース 7
- *   └ タピオカ 11
- * リンゴジュース 7
- *
- * ↓
- *
- * FPO1:7+11+7
+ * 注文QR生成。商品コードを選択順に連結する。
+ * 例: FPO1:7+7+13
  */
 function generateQr() {
-  /*
-   * カート表示上では
-   * 商品とトッピングをグループ化しているが、
-   * QR生成時には従来どおり平坦化する。
-   */
-  const orderCodes = cart.flatMap((item) => [
-    Number(item.product.orderCode),
-
-    ...item.toppings.map((topping) => Number(topping.orderCode)),
-  ]);
+  const orderCodes = cart.map((item) => Number(item.product.orderCode));
 
   const text = `FPO1:${orderCodes.join("+")}`;
 
@@ -575,11 +399,9 @@ function generateQr() {
  * UIイベント
  */
 
-els.skip.onclick = cancelPending;
+els.cancel.onclick = cancelPending;
 
-els.add.onclick = () => {
-  addPending(true);
-};
+els.add.onclick = addPending;
 
 els.clear.onclick = clearCart;
 

@@ -130,16 +130,7 @@ h1 {
   gap: 12px;
 }
 
-.topping-grid {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-
-  gap: 12px;
-}
-
-.product,
-.topping {
+.product {
   min-height: 94px;
 
   padding: 12px;
@@ -224,8 +215,7 @@ h1 {
 /*
  * 1商品＝1ブロック
  *
- * 親商品と、その商品のトッピングを
- * 同じブロック内に表示する。
+ * 商品名・価格・小計を表示する。
  */
 .cart-row {
   padding: 14px 0;
@@ -247,7 +237,7 @@ h1 {
 }
 
 /*
- * 親商品
+ * 商品
  */
 .cart-item-main {
   display: flex;
@@ -268,52 +258,6 @@ h1 {
 }
 
 .cart-item-price {
-  flex-shrink: 0;
-
-  white-space: nowrap;
-}
-
-/*
- * トッピング領域
- */
-.cart-item-toppings {
-  margin-top: 9px;
-
-  margin-left: 8px;
-
-  padding: 8px 10px;
-
-  border-left: 3px solid #81d4fa;
-
-  border-radius: 0 7px 7px 0;
-
-  background: #f4f8fc;
-}
-
-.cart-item-topping {
-  display: flex;
-
-  align-items: baseline;
-  justify-content: space-between;
-
-  gap: 16px;
-
-  color: #52627a;
-
-  font-size: 15px;
-}
-
-.cart-item-topping + .cart-item-topping {
-  margin-top: 6px;
-}
-
-.cart-topping-name {
-  min-width: 0;
-
-  overflow-wrap: anywhere;
-}
-
-.cart-topping-price {
   flex-shrink: 0;
 
   white-space: nowrap;
@@ -477,56 +421,6 @@ h1 {
   font-size: 18px;
 }
 
-/* =========================
-   トッピング選択
-   ========================= */
-
-.topping {
-  min-height: 94px;
-
-  border: 2px solid #b8c5d4;
-
-  background: #fff;
-}
-
-.topping-name {
-  display: block;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 17px;
-}
-
-.topping-state {
-  display: inline-block;
-
-  margin-top: 9px;
-
-  padding: 3px 8px;
-
-  border-radius: 999px;
-
-  color: #475467;
-  background: #e7ecf1;
-
-  font-size: 14px;
-}
-
-.topping.selected {
-  border-color: #b54708;
-
-  background: #ffecd1;
-}
-
-.topping.selected .topping-state {
-  color: #fff;
-
-  background: #b54708;
-}
-
 .modal-total {
   margin: 20px 0 4px;
 
@@ -548,7 +442,7 @@ h1 {
   margin: 0;
 }
 
-#topping-modal .modal-actions {
+#product-modal .modal-actions {
   grid-template-columns: 1fr;
 }
 
@@ -637,10 +531,6 @@ h1 {
 
   .cart-item-main {
     font-size: 16px;
-  }
-
-  .cart-item-topping {
-    font-size: 14px;
   }
 
   .cart-row {
